@@ -1,0 +1,36 @@
+<h2>Register</h2>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <div class="form-group">
+    <label for="fullName">Full Name</label>
+    <input id="fullName" formControlName="fullName" />
+  </div>
+  <div class="form-group">
+    <label for="registerEmail">Email</label>
+    <input id="registerEmail" formControlName="email" />
+  </div>
+  <div class="form-group">
+    <label for="dob">Date of Birth</label>
+    <input id="dob" type="date" formControlName="dob" />
+  </div>
+  <div class="form-group">
+    <label for="gender">Gender</label>
+    <select id="gender" formControlName="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="registerPassword">Password</label>
+    <input id="registerPassword" type="password" formControlName="password" />
+  </div>
+  <div class="form-group">
+    <label for="interests">Interests</label>
+    <input id="interests" formControlName="interests" />
+  </div>
+  <div class="form-group">
+    <label for="experience">Years of Experience</label>
+    <input id="experience" type="number" formControlName="experience" />
+  </div>
+  <button type="submit">Register</button>
+</form>
