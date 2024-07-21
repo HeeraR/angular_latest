@@ -1,36 +1,41 @@
-<h2>Register</h2>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
-  <div class="form-group">
-    <label for="fullName">Full Name</label>
-    <input id="fullName" formControlName="fullName" />
+<h1>Register</h1>
+<form>
+  <div>
+    <label for="fullName">Full Name<span class="required">*</span></label>
+    <input type="text" id="fullName"  name="fullName" autocomplete="off">
   </div>
-  <div class="form-group">
-    <label for="registerEmail">Email</label>
-    <input id="registerEmail" formControlName="email" />
+  <div>
+    <label for="email">Email<span class="required">*</span></label>
+    <input type="email" id="email"  name="email"autocomplete="off">
   </div>
-  <div class="form-group">
-    <label for="dob">Date of Birth</label>
-    <input id="dob" type="date" formControlName="dob" />
+  <div>
+    <label for="dob">Date of Birth<span class="required">*</span></label>
+    <input type="date" id="dob"  name="dob">
   </div>
-  <div class="form-group">
-    <label for="gender">Gender</label>
-    <select id="gender" formControlName="gender">
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="other">Other</option>
+  <div>
+    <label for="gender">Gender<span class="required">*</span></label>
+    <select id="gender"  name="gender" required>
+      <option value="" disabled selected>Select your gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
     </select>
   </div>
-  <div class="form-group">
-    <label for="registerPassword">Password</label>
-    <input id="registerPassword" type="password" formControlName="password" />
+  <div>
+      <label for="interests">Interests<span class="required">*</span></label>
+      <select name="interests" id="interests">
+          <option value="" disabled selected>Select your interests</option>
+          <option value="Technology">Technology</option>
+          <option value="Science">Science</option>
+          <option value="Arts">Arts</option>
+      </select>
   </div>
-  <div class="form-group">
-    <label for="interests">Interests</label>
-    <input id="interests" formControlName="interests" />
+  <div>
+    <label for="password">Password<span class="required">*</span></label>
+    <input type="password" name="password" id="password" required autocomplete="off">
   </div>
-  <div class="form-group">
-    <label for="experience">Years of Experience</label>
-    <input id="experience" type="number" formControlName="experience" />
+  <div>
+    <label for="experience">Years of Experience<span class="required">*</span></label>
+    <input type="number" id="experience"  name="experience" autocomplete="off">
   </div>
   <button type="submit">Register</button>
 </form>

@@ -1,3 +1,4 @@
+// register.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -24,7 +25,9 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      console.log('Registration successful');
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      users.push(this.registerForm.value);
+      localStorage.setItem('users', JSON.stringify(users));
       alert('Registration successful');
       this.router.navigate(['/login']);
     }

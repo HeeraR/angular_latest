@@ -1,6 +1,6 @@
+
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -8,23 +8,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  username: string = '';
+  password: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
-    });
-  }
+  constructor(public router: Router) {}
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      console.log('Login successful');
+  login() {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u: any) => u.email === this.username && u.password === this.password);
+
+    if (user) {
+      localStorage.setItem('isLoggedIn', 'true');
       this.router.navigate(['/users']);
+    } else {
+      alert('Invalid credentials');
     }
-  }
-
-  navigateToRegister() {
-    this.router.navigate(['/register']);
   }
 }
