@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '../../user.model';
+
 
 @Component({
   selector: 'app-login',
@@ -7,17 +9,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
+  loginData = {
+    email: '',
+    password: ''
+  };
 
-  constructor(public router: Router) {}  
+  constructor(private router: Router) {}
 
-  login() {
-    if (this.username === 'admin' && this.password === 'admin') {
-      localStorage.setItem('isLoggedIn', 'true');
-      this.router.navigate(['/users']); 
+  onLogin(): void {
+    const usersFromStorage = localStorage.getItem('users');
+    if (usersFromStorage) {
+      const users: User[] = JSON.parse(usersFromStorage) as User[];
+      const user = users.find(user => user.email === this.loginData.email && user.password === this.loginData.password);
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user)); 
+        alert('Login successful!');
+        this.router.navigate(['/users']);  
+      } else {
+        alert('Invalid email or password.');
+      }
     } else {
-      alert('Invalid credentials');
+      alert('No users found. Please register first.');
     }
   }
-}
+}  

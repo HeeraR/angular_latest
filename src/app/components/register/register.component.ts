@@ -1,34 +1,76 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { User } from '../../user.model';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
+export class RegisterComponent implements OnInit {
+  user: User = {
+    fullName: '',
+    email: '',
+    password: '',
+    dob: '',
+    gender: '',
+    interests: [],
+    experience: 0
+  };
+  users: User[] = [];
+  filteredUsers: User[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.registerForm = this.fb.group({
-      fullName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      dob: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      interests: [''],
-      experience: [0, [Validators.required, Validators.min(0)]]
-    });
+  ngOnInit(): void {
+    const usersFromStorage = localStorage.getItem('users');
+    if (usersFromStorage) {
+      this.users = JSON.parse(usersFromStorage) as User[];
+    }
+    this.filteredUsers = [...this.users];
   }
 
-  onSubmit() {
-    if (this.registerForm.valid) {
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      users.push(this.registerForm.value);
-      localStorage.setItem('users', JSON.stringify(users));
-      alert('Registration successful');
-      this.router.navigate(['/login']);
+  onSubmit(): void {
+    if (this.users.some(user => user.fullName === this.user.fullName)) {
+      alert('This name has already been registered. Please use a different name.');
+      return;
     }
+
+    if (this.users.some(user => user.email === this.user.email)) {
+      alert('This email has already been registered. Please use a different email.');
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(this.user.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    if (this.user.dob) {
+      const [year, month, day] = this.user.dob.split('-');
+      this.user.dob = `${day}-${month}-${year}`;
+    }
+
+    this.users.push({ ...this.user });
+    localStorage.setItem('users', JSON.stringify(this.users));
+    this.filteredUsers = [...this.users];
+    alert('Registration successful!');
+    this.resetForm();
+  }
+
+  deleteUser(index: number): void {
+    this.users.splice(index, 1);
+    localStorage.setItem('users', JSON.stringify(this.users));
+    this.filteredUsers = [...this.users];
+  }
+
+  resetForm(): void {
+    this.user = {
+      fullName: '',
+      email: '',
+      password: '',
+      dob: '',
+      gender: '',
+      interests: [],
+      experience: 0
+    };
   }
 }
